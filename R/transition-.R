@@ -3,7 +3,7 @@
 #' @usage NULL
 #' @export
 #' @importFrom ggplot2 ggproto
-#' @importFrom stringi stri_replace stri_match
+#' @importFrom stringi stri_replace stri_match stri_detect
 Transition <- ggproto('Transition', NULL,
   params = NULL,
   mapping = '',
@@ -19,7 +19,8 @@ Transition <- ggproto('Transition', NULL,
     Map(function(d, id) {
       if (length(id) == 0 && !replace) return(d)
       id <- if (length(id) > 0) paste0('<', id, '>') else ''
-      d$group <- if (replace) {
+      d$group <- as.character(d$group)
+      d$group <- if (replace && any(stri_detect(d$group, regex = '<.*>'))) {
         stri_replace(d$group, id, regex = '<.*>')
       } else {
         paste0(d$group, id)
@@ -46,8 +47,11 @@ Transition <- ggproto('Transition', NULL,
       split_panel <- stri_match(d$group, regex = '^(.*)(<.*>)(.*)$')
       if (is.na(split_panel[1])) return(d)
       groups <- paste0(split_panel[, 2], split_panel[, 4])
-      groups_int <- suppressWarnings(as.integer(groups))
-      d$group <- if (anyNA(groups_int)) groups else groups_int
+      if (all(stri_detect(groups, regex = '^-?[0-9]+$'))) {
+        d$group <- as.integer(groups)
+      } else {
+        d$group <- groups
+      }
       d$PANEL <- paste0(d$PANEL, split_panel[, 3])
       d
     })
@@ -191,13 +195,17 @@ standardise_times <- function(times, name, to_class = NULL) {
   cl <- possible_classes[unique(classes)]
   if (length(cl) == 1 && (cl == 'difftime' || cl == 'hms')) {
     if (is.null(to_class)) {
-      lapply(times, `units<-`, 'secs')
+      times <- lapply(times, `units<-`, 'secs')
     } else if (to_class == 'POSIXct') {
       cl <- to_class
-      lapply(times, `units<-`, 'secs')
+      times <- lapply(times, `units<-`, 'secs')
     } else if (to_class == 'Date') {
+      if (cl == 'hms') {
+        times <- lapply(times, `class<-`, 'difftime')
+      }
+      times <- lapply(times, `units<-`, 'days')
       cl <- to_class
-      lapply(times, `units<-`, 'days')
+
     }
   }
   if (!is.null(to_class) && length(cl) != 0) if (cl != to_class) stop(name, ' data must be ', to_class, call. = FALSE)
