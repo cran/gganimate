@@ -1,12 +1,16 @@
 Package: gganimate
 Type: Package
 Title: A Grammar of Animated Graphics
-Version: 1.0.1
-Date: 2019-02-15
-Authors@R: c(person("Thomas Lin", "Pedersen", email = "thomasp85@gmail.com",
-    role = c("aut", "cre")),
-    person("David", "Robinson", email = "admiral.david@gmail.com",
-    role = c("aut")))
+Version: 1.0.2
+Date: 2019-03-03
+Authors@R: 
+    c(person("Thomas Lin", "Pedersen", email = "thomasp85@gmail.com",
+             role = c("aut", "cre"), 
+             comment = c(ORCID = "0000-0002-5147-4711")),
+      person("David", "Robinson", email = "admiral.david@gmail.com",
+             role = c("aut")),
+      person("RStudio",
+             role = "cph"))
 Maintainer: Thomas Lin Pedersen <thomasp85@gmail.com>
 Description: The grammar of graphics as implemented in the 'ggplot2' package has
     been successful in providing a powerful API for creating static 
@@ -38,10 +42,12 @@ Collate: 'aaa.R' 'anim_save.R' 'animate.R' 'animation_store.R'
         'transmute-enter.R' 'transmute-exit.R' 'transmuters.R'
         'tween_before_stat.R' 'view-.R' 'view-follow.R' 'view-static.R'
         'view-step.R' 'view-step-manual.R' 'view-zoom.R'
-        'view-zoom-manual.R'
+        'view-zoom-manual.R' 'zzz.R'
 NeedsCompilation: no
-Packaged: 2019-02-15 21:57:47 UTC; thomas
-Author: Thomas Lin Pedersen [aut, cre],
-  David Robinson [aut]
+Packaged: 2019-03-03 21:04:41 UTC; thomas
+Author: Thomas Lin Pedersen [aut, cre]
+    (<https://orcid.org/0000-0002-5147-4711>),
+  David Robinson [aut],
+  RStudio [cph]
 Repository: CRAN
-Date/Publication: 2019-02-15 22:20:06 UTC
+Date/Publication: 2019-03-03 21:30:02 UTC

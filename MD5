@@ -1,7 +1,7 @@
-68c18af1db0d5928ee2cac99e54fe476 *DESCRIPTION
+59dff0f531a343531f3f1a6d7f9a8cd0 *DESCRIPTION
 390aa971d748d2d8595f400ac17045c9 *LICENSE
 114e7f19d805b6bef3efd985dfb2ed1c *NAMESPACE
-ff52bffa15f992e47279c0b462076f06 *NEWS.md
+eedd24026844251ba15913f720d8fba4 *NEWS.md
 a170a783feed946743419be4af7048a1 *R/aaa.R
 d4d68e51a1ac05ec22e0eff77854df8a *R/anim_save.R
 e6e2b0d313b144f271aa90e33bbd5a96 *R/animate.R
@@ -46,10 +46,11 @@ e11e477deec7420cfc184d398b310869 *R/view-step-manual.R
 8479894f92e52f1d213904dfeb32e320 *R/view-step.R
 228680c2fda880e881dba3f303e4c1ce *R/view-zoom-manual.R
 a17950e9515d5d78cd6d28ac6ab81dc0 *R/view-zoom.R
+b04b1b1e3efe7f939b4ede6d1dc232aa *R/zzz.R
 2efdc0f451046066f366f9c0826b8358 *build/vignette.rds
 8a89a890318de1d8887158da915820ca *inst/doc/gganimate.R
 837787bb8fcb56daa17467681b0d7957 *inst/doc/gganimate.Rmd
-0b4ee100aeebc9fdab84c3804f52c66a *inst/doc/gganimate.html
+9289d43f0308969ab9be1f40f89f5ddc *inst/doc/gganimate.html
 e7c19935c1bdc19365440d9d890cdf9b *man/anim_save.Rd
 986e44eafc40f32fc6f295c59432eaf4 *man/animate.Rd
 7c9206bfbc93c657002ec51beb263642 *man/ease_aes.Rd
@@ -60,7 +61,7 @@ c28e8290c459e7de8f46bd7e7ca90088 *man/figures/README-unnamed-chunk-4-1.gif
 567df318cfd11ae74e268ac12635ade1 *man/figures/logo.svg
 a07a37123fb185a239439d7e61167181 *man/frame_vars.Rd
 12a30146b72b2c4d3f6e53b1b753f76d *man/gganimate-ggproto.Rd
-a668f5d6eefea0688964d15e077e02ff *man/gganimate-package.Rd
+09362d2a56ff9dfa9e545c6ca8f1405f *man/gganimate-package.Rd
 8c083ac24f9f5d106dd70287720e0336 *man/gganimate.Rd
 2a4619358ac96f2c15e07ce1ce38b8e9 *man/gif_file.Rd
 9c7aff84339f1a2d8055a52a80d50be7 *man/last_animation.Rd
