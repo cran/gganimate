@@ -1,7 +1,7 @@
 Package: gganimate
 Type: Package
 Title: A Grammar of Animated Graphics
-Version: 1.0.2
+Version: 1.0.3
 Date: 2019-03-03
 Authors@R: 
     c(person("Thomas Lin", "Pedersen", email = "thomasp85@gmail.com",
@@ -44,10 +44,10 @@ Collate: 'aaa.R' 'anim_save.R' 'animate.R' 'animation_store.R'
         'view-step.R' 'view-step-manual.R' 'view-zoom.R'
         'view-zoom-manual.R' 'zzz.R'
 NeedsCompilation: no
-Packaged: 2019-03-03 21:04:41 UTC; thomas
+Packaged: 2019-04-02 18:49:10 UTC; thomas
 Author: Thomas Lin Pedersen [aut, cre]
     (<https://orcid.org/0000-0002-5147-4711>),
   David Robinson [aut],
   RStudio [cph]
 Repository: CRAN
-Date/Publication: 2019-03-03 21:30:02 UTC
+Date/Publication: 2019-04-02 19:10:02 UTC

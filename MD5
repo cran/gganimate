@@ -1,7 +1,7 @@
-59dff0f531a343531f3f1a6d7f9a8cd0 *DESCRIPTION
+8af2d9e7b093d0f612badfe6394772be *DESCRIPTION
 390aa971d748d2d8595f400ac17045c9 *LICENSE
 114e7f19d805b6bef3efd985dfb2ed1c *NAMESPACE
-eedd24026844251ba15913f720d8fba4 *NEWS.md
+b5e880a4d3dfc2ba3c8c69a3a4a15c84 *NEWS.md
 a170a783feed946743419be4af7048a1 *R/aaa.R
 d4d68e51a1ac05ec22e0eff77854df8a *R/anim_save.R
 e6e2b0d313b144f271aa90e33bbd5a96 *R/animate.R
@@ -14,7 +14,7 @@ acca605435f17d09587d63fb41cd40b5 *R/gganimate-package.r
 86945a76be60b5e865085eaa6e28fd4c *R/group_column.R
 5bd50701c81844064ccc69e0999bccd3 *R/layer_type.R
 87c31596c58ddbae218abe5cad2eb43f *R/match_shapes.R
-14a446f53c5fa642857ad588e1efb29f *R/plot-build.R
+86396a33817ce3b41920f586aabaa1ac *R/plot-build.R
 00f83dbb29d71b711f50bcccca8fe22d *R/post_process.R
 869d6ec16582e957f297073a2f2a3224 *R/renderers.R
 1e384ff4a4dcb64ae099d4711bd7b40f *R/scene.R
@@ -50,7 +50,7 @@ b04b1b1e3efe7f939b4ede6d1dc232aa *R/zzz.R
 2efdc0f451046066f366f9c0826b8358 *build/vignette.rds
 8a89a890318de1d8887158da915820ca *inst/doc/gganimate.R
 837787bb8fcb56daa17467681b0d7957 *inst/doc/gganimate.Rmd
-9289d43f0308969ab9be1f40f89f5ddc *inst/doc/gganimate.html
+7e90c6bc55f5fe7c854cec726db04174 *inst/doc/gganimate.html
 e7c19935c1bdc19365440d9d890cdf9b *man/anim_save.Rd
 986e44eafc40f32fc6f295c59432eaf4 *man/animate.Rd
 7c9206bfbc93c657002ec51beb263642 *man/ease_aes.Rd
