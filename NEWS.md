@@ -1,11 +1,18 @@
+# gganimate 1.0.4
+
+* Fix a bug in `ffmpeg_renderer()` where the `fps` argument were being ignored.
+* Make sure `ggraph` objects registers the graph context after they are promoted
+  to `gganim` objects.
+* Better fallback strategy for lack of gifski.
+
 # gganimate 1.0.3
 
 * Fix a conditional in the plot building step to make it work with the ggplot2
-  3.1.1 hotfix
+  3.1.1 hotfix.
 
 # gganimate 1.0.2
 
-* Fix registration of S3 methods for suggested packages
+* Fix registration of S3 methods for suggested packages.
 
 # gganimate 1.0.1
 

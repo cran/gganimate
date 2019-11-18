@@ -1,8 +1,7 @@
 Package: gganimate
 Type: Package
 Title: A Grammar of Animated Graphics
-Version: 1.0.3
-Date: 2019-03-03
+Version: 1.0.4
 Authors@R: 
     c(person("Thomas Lin", "Pedersen", email = "thomasp85@gmail.com",
              role = c("aut", "cre"), 
@@ -21,14 +20,14 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: TRUE
 VignetteBuilder: knitr
-Depends: ggplot2 (>= 3.0.0)
-Suggests: magick, svglite, knitr, rmarkdown, testthat, base64enc,
-        htmltools, covr, transformr, av, png, gifski
 RoxygenNote: 6.1.1
-URL: http://github.com/thomasp85/gganimate
-BugReports: http://github.com/thomasp85/gganimate/issues
+URL: https://gganimate.com, https://github.com/thomasp85/gganimate
+BugReports: https://github.com/thomasp85/gganimate/issues
+Depends: ggplot2 (>= 3.0.0)
 Imports: stringi, tweenr (>= 1.0.1), grid, rlang, glue, progress, plyr,
         scales, grDevices, utils
+Suggests: magick, svglite, knitr, rmarkdown, testthat, base64enc,
+        htmltools, covr, transformr, av, png, gifski
 Collate: 'aaa.R' 'anim_save.R' 'animate.R' 'animation_store.R'
         'ease-aes.R' 'gganim.R' 'gganimate-ggproto.R'
         'gganimate-package.r' 'ggplot2_reimpl.R' 'group_column.R'
@@ -44,10 +43,10 @@ Collate: 'aaa.R' 'anim_save.R' 'animate.R' 'animation_store.R'
         'view-step.R' 'view-step-manual.R' 'view-zoom.R'
         'view-zoom-manual.R' 'zzz.R'
 NeedsCompilation: no
-Packaged: 2019-04-02 18:49:10 UTC; thomas
+Packaged: 2019-11-18 08:45:49 UTC; thomas
 Author: Thomas Lin Pedersen [aut, cre]
     (<https://orcid.org/0000-0002-5147-4711>),
   David Robinson [aut],
   RStudio [cph]
 Repository: CRAN
-Date/Publication: 2019-04-02 19:10:02 UTC
+Date/Publication: 2019-11-18 09:10:03 UTC
