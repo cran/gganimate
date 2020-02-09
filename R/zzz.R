@@ -20,6 +20,17 @@ def_ren <- new.env(parent = emptyenv())
 
   invisible()
 }
+.onAttach <- function(...) {
+  if (!isTRUE(def_ren$has_proper)) {
+    packageStartupMessage(
+      'No renderer backend detected. gganimate will default to writing frames to separate files\n',
+      'Consider installing:\n',
+      '- the `gifski` package for gif output\n',
+      '- the `av` package for video output\n',
+      'and restarting the R session'
+    )
+  }
+}
 
 register_s3_method <- function(pkg, generic, class, fun = NULL) {
   stopifnot(is.character(pkg), length(pkg) == 1)

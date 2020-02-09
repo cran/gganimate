@@ -1,3 +1,8 @@
+# gganimate 1.0.5
+
+* No longer needs the png package for gifski rendering
+* Give startup message if no renderer backend are detected.
+
 # gganimate 1.0.4
 
 * Fix a bug in `ffmpeg_renderer()` where the `fps` argument were being ignored.

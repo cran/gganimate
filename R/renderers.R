@@ -50,7 +50,6 @@
 #' @param options Either a character vector of command line options for ffmpeg
 #' or a named list of option-value pairs that will be converted to command line
 #' options automatically
-#' @param ... arguments passed on to the selected renderer
 #'
 #' @return The provided renderers are factory functions that returns a new function
 #' that take `frames` and `fps` as arguments, the former being a character
@@ -87,16 +86,13 @@ gifski_renderer <- function(file = NULL, loop = TRUE, width = NULL, height = NUL
   if (!requireNamespace('gifski', quietly = TRUE)) {
     stop('The gifski package is required to use gifski_renderer', call. = FALSE)
   }
-  if (!requireNamespace('png', quietly = TRUE)) {
-    stop('The png package is required to use gifski_renderer', call. = FALSE)
-  }
   function(frames, fps) {
     if (is.null(file)) file <- tempfile(fileext = '.gif')
     if (!all(grepl('.png$', frames))) {
       stop('gifski only supports png files', call. = FALSE)
     }
     if (is.null(width) || is.null(height)) {
-      dims <- dim(png::readPNG(frames[1], native = TRUE))
+      dims <- png_dim(frames[1])
       height <- height %||% dims[1]
       width <- width %||% dims[2]
     }
