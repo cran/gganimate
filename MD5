@@ -1,7 +1,7 @@
-a349b2c217b1d8a6d9b6f57a1adf84f0 *DESCRIPTION
+a14ca27d5d11b7953c971457009917bd *DESCRIPTION
 390aa971d748d2d8595f400ac17045c9 *LICENSE
 114e7f19d805b6bef3efd985dfb2ed1c *NAMESPACE
-8796c1d7040dc194932d18f809b2f46c *NEWS.md
+66a255d84a4da24d188357f01c7ac796 *NEWS.md
 0dcbca70e083aad7906aafbdb47925c2 *R/aaa.R
 d4d68e51a1ac05ec22e0eff77854df8a *R/anim_save.R
 1fdcea05590623501f057dea07b660e7 *R/animate.R
@@ -16,7 +16,7 @@ acca605435f17d09587d63fb41cd40b5 *R/gganimate-package.r
 87c31596c58ddbae218abe5cad2eb43f *R/match_shapes.R
 86396a33817ce3b41920f586aabaa1ac *R/plot-build.R
 00f83dbb29d71b711f50bcccca8fe22d *R/post_process.R
-fea7530d4933b98166493c8fb01b8ed9 *R/renderers.R
+0c188e7ff2b8d8e7561bb18af7da06d6 *R/renderers.R
 1e384ff4a4dcb64ae099d4711bd7b40f *R/scene.R
 e5c4112ef9590e7e2fd9752004d1179b *R/shadow-.R
 fd447203a68305a5c0763b8bb747ff0a *R/shadow-mark.R
@@ -47,11 +47,11 @@ e11e477deec7420cfc184d398b310869 *R/view-step-manual.R
 228680c2fda880e881dba3f303e4c1ce *R/view-zoom-manual.R
 a17950e9515d5d78cd6d28ac6ab81dc0 *R/view-zoom.R
 edb1ca848cb78d251a5d6e1b9d57bc9c *R/zzz.R
-a38b8ea20cbe4b0ef19244b979195d57 *build/vignette.rds
+76544882efa5795dcc18f44d8f82045f *build/vignette.rds
 ea11210f31aa3ec9639e8b283b45f5bc *inst/doc/gganimate.R
 837787bb8fcb56daa17467681b0d7957 *inst/doc/gganimate.Rmd
-8bf0c7f142a452db72f3b82dece57cfb *inst/doc/gganimate.html
-e7c19935c1bdc19365440d9d890cdf9b *man/anim_save.Rd
+adf1085cdeb7dc8c19da885fc79dec21 *inst/doc/gganimate.html
+f62d357b895d5b4a34da2f8e7268d2f5 *man/anim_save.Rd
 f2f05479e85b2876009b30c5ca9c794e *man/animate.Rd
 7c9206bfbc93c657002ec51beb263642 *man/ease_aes.Rd
 aa66aa95ccc323e0b3eeb6a6ad7aa965 *man/enter_exit.Rd
@@ -63,7 +63,7 @@ a07a37123fb185a239439d7e61167181 *man/frame_vars.Rd
 12a30146b72b2c4d3f6e53b1b753f76d *man/gganimate-ggproto.Rd
 9cf475b2607d7d4eede8bd0d92826653 *man/gganimate-package.Rd
 8c083ac24f9f5d106dd70287720e0336 *man/gganimate.Rd
-148bd3f0bbeb58c3fa830a9cbb15242b *man/gif_file.Rd
+0e9b705f2bccc4a501e2c010404721f4 *man/gif_file.Rd
 9c7aff84339f1a2d8055a52a80d50be7 *man/last_animation.Rd
 4433ee71802553b5c501a570b186aacc *man/layer_type.Rd
 5e7e50c4b0d5322dc86907d544617eab *man/renderers.Rd
@@ -91,6 +91,6 @@ cacb23a7988d8aaca921eb381ce15442 *man/video_file.Rd
 33e9755f7f415f5b53a81e2f530aa6fc *man/view_zoom.Rd
 0422afc36e797e18e1c652be17b278fc *tests/testthat.R
 4f221b0ceca502df1191dd8f1f3a0f68 *tests/testthat/test-anim_save.R
-45f04514488db200b03c2dfd864fc12e *tests/testthat/test-transition-states.R
+9f838575000f8dab97d4b7d8f92c561f *tests/testthat/test-transition-states.R
 d958cb87140592fbd77c534fbd89ab5b *vignettes/extra/talks.Rmd
 837787bb8fcb56daa17467681b0d7957 *vignettes/gganimate.Rmd
