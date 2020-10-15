@@ -1,10 +1,10 @@
-a14ca27d5d11b7953c971457009917bd *DESCRIPTION
+b64a5eedef22783f03077b0726337d42 *DESCRIPTION
 390aa971d748d2d8595f400ac17045c9 *LICENSE
 114e7f19d805b6bef3efd985dfb2ed1c *NAMESPACE
-66a255d84a4da24d188357f01c7ac796 *NEWS.md
+22c32057d64ce108061fea3c344c586d *NEWS.md
 0dcbca70e083aad7906aafbdb47925c2 *R/aaa.R
 d4d68e51a1ac05ec22e0eff77854df8a *R/anim_save.R
-1fdcea05590623501f057dea07b660e7 *R/animate.R
+8d727a9d0a5fd9b13dfb7e9a67b3ef05 *R/animate.R
 fc58df4cd45954dddaad32322bfb304c *R/animation_store.R
 4bb8ca7eb5380298a19382273c212c72 *R/ease-aes.R
 c746a1221ef2be0256bda11a96ed3c80 *R/gganim.R
@@ -48,11 +48,11 @@ e11e477deec7420cfc184d398b310869 *R/view-step-manual.R
 a17950e9515d5d78cd6d28ac6ab81dc0 *R/view-zoom.R
 edb1ca848cb78d251a5d6e1b9d57bc9c *R/zzz.R
 76544882efa5795dcc18f44d8f82045f *build/vignette.rds
-ea11210f31aa3ec9639e8b283b45f5bc *inst/doc/gganimate.R
-837787bb8fcb56daa17467681b0d7957 *inst/doc/gganimate.Rmd
-adf1085cdeb7dc8c19da885fc79dec21 *inst/doc/gganimate.html
+815a2bed6557ddfb346ce59784a969e8 *inst/doc/gganimate.R
+95bf340473ff1c6bb2687487be3a79e2 *inst/doc/gganimate.Rmd
+a08005538985c9ac33d713c5747c19df *inst/doc/gganimate.html
 f62d357b895d5b4a34da2f8e7268d2f5 *man/anim_save.Rd
-f2f05479e85b2876009b30c5ca9c794e *man/animate.Rd
+93219fb20d22438516a6c2c4a2d8f3ef *man/animate.Rd
 7c9206bfbc93c657002ec51beb263642 *man/ease_aes.Rd
 aa66aa95ccc323e0b3eeb6a6ad7aa965 *man/enter_exit.Rd
 110fe763b3b6471286f57c2d4ac46223 *man/figures/README-unnamed-chunk-2-1.gif
@@ -93,4 +93,4 @@ cacb23a7988d8aaca921eb381ce15442 *man/video_file.Rd
 4f221b0ceca502df1191dd8f1f3a0f68 *tests/testthat/test-anim_save.R
 9f838575000f8dab97d4b7d8f92c561f *tests/testthat/test-transition-states.R
 d958cb87140592fbd77c534fbd89ab5b *vignettes/extra/talks.Rmd
-837787bb8fcb56daa17467681b0d7957 *vignettes/gganimate.Rmd
+95bf340473ff1c6bb2687487be3a79e2 *vignettes/gganimate.Rmd

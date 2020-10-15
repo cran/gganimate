@@ -80,7 +80,7 @@ anim +
   enter_fade() + enter_drift(x_mod = -1) + 
   exit_shrink() + exit_drift(x_mod = 5)
 
-## -----------------------------------------------------------------------------
+## ---- eval=requireNamespace('av', quietly = TRUE)-----------------------------
 # Video output
 animate(
   anim + enter_fade() + exit_fly(y_loc = 1),
