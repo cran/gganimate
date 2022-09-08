@@ -1,3 +1,32 @@
+# gganimate 1.0.8
+
+* Fix a bug when creating labels from aesthetics that include glue expressions 
+  (#422)
+* Fix a bug in ffmpeg detection (#346, @rfaelens, #360, @adamdsmith)
+* Remove plyr dependency
+* Fix a bug in `transition_filter()` in the presence of `NA` filter values 
+  (#404, @rsaporta)
+* Fix a bug with static layers that include position adjustments (#418)
+* Fix a bug in `transition_time()` where multiple time values in the same frame
+  would lead to unexpected stacking of the data (#414)
+* Fix a bug in `transition_reveal()` where coinciding tweens would result in 
+  wrong direction of the arrow (#409)
+* Fix a bug in `transition_layer()` when the last layer had an exit duration 
+  (#384)
+* Fix a bug in `transition_time()` when facets had data with different starting
+  time (#357)
+* Make sure `exclude_layer` in `view_*()` is taken into account
+* Fix a bug when using a view with `coord_flip()` which would result in weird 
+  flickering and movement of the position guies (#336)
+* Fix a bug in `transition_reveal()` that would require input to be ordered 
+  along the time dimension for point-like geoms (#323)
+* Fix a bug in `view_follow()` that would result in errors when used with 
+  discrete scales (#304)
+* Fix bug in `transition_states()` where too few frames relative to states in 
+  combination with `wrap = FALSE` would cause an error (#301)
+* Fix a bug in `transition_time()` when the time dimension contained `NA` values
+  (#307)
+
 # gganimate 1.0.7
 
 * Support ragg png device to ensure that it works with knitr's ragg support

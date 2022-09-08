@@ -114,7 +114,7 @@ TransitionFilter <- ggproto('TransitionFilter', Transition,
   var_names = 'filter',
   setup_params = function(self, data, params) {
     params$row_id <- assign_filters(data, params$filter_quos)
-    params$require_stat <- any(vapply(params$filter_quo, function(f) require_stat(f[[2]]), logical(1)))
+    params$require_stat <- any(vapply(params$filter_quo, function(f) require_stat(rlang::quo_get_expr(f)), logical(1)))
     params
   },
   setup_params2 = function(self, data, params, row_vars) {
@@ -205,7 +205,7 @@ TransitionFilter <- ggproto('TransitionFilter', Transition,
 )
 
 assign_filters <- function(data, filters, after = FALSE, row_vars = NULL) {
-  do_filter <- vapply(filters, function(f) require_stat(f[[2]]), logical(1)) == after
+  do_filter <- vapply(filters, function(f) require_stat(rlang::quo_get_expr(f)), logical(1)) == after
   row_filters <- lapply(data, function(d) {
     row_filter <- do.call(rbind, lapply(seq_along(filters), function(i) {
       if (!do_filter[i]) return(rep(FALSE, nrow(d)))
@@ -215,7 +215,7 @@ assign_filters <- function(data, filters, after = FALSE, row_vars = NULL) {
       filter
     }))
     if (all(row_filter)) return(numeric(0))
-    apply(row_filter, 2, function(x) if (!any(x)) '0' else paste(which(x), collapse = '-'))
+    apply(row_filter, 2, function(x) if (!any(x, na.rm = TRUE)) '0' else paste(which(x), collapse = '-'))
   })
   if (after) {
     Map(function(new_f, old_f) paste0(old_f, '-', new_f), new_f = row_filters, old_f = row_vars$filter)

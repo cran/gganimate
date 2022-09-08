@@ -32,7 +32,7 @@
 #' therefore define which elements will turn into each other between states.
 #' The group aesthetic, if not set, will be calculated from the interaction of all
 #' discrete aesthetics in the layer (excluding `label`), so it is often better
-#' to set it explicetly when animating, to make sure your data is interpreted in
+#' to set it explicitly when animating, to make sure your data is interpreted in
 #' the right way. If the group aesthetic is not set, and no discrete aesthetics
 #' exists then all rows will have the same group. If the group aesthetic is not
 #' unique in each state, then rows will be matched first by group and then by
@@ -113,6 +113,7 @@ TransitionStates <- ggproto('TransitionStates', Transition,
     if (!params$wrap) transition_length[length(transition_length)] <- 0
     state_length <- rep(params$state_length, length.out = length(all_levels))
     frames <- distribute_frames(state_length, transition_length, params$nframes + if (params$wrap) 1 else 0)
+    params$nframes <- sum(frames$static_length) + sum(frames$transition_length)
     params$state_levels <- all_levels
     params$row_id <- row_state
     params$state_length <- frames$static_length

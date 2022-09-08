@@ -6,13 +6,9 @@
 \alias{_PACKAGE}
 \title{gganimate: A Grammar of Animated Graphics}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-The grammar of graphics as implemented in the 'ggplot2' package has
-    been successful in providing a powerful API for creating static 
-    visualisation. In order to extend the API for animated graphics this package
-    provides a completely new set of grammar, fully compatible with 'ggplot2' 
-    for specifying transitions and animations in a flexible and extensible way.
+The grammar of graphics as implemented in the 'ggplot2' package has been successful in providing a powerful API for creating static visualisation. In order to extend the API for animated graphics this package provides a completely new set of grammar, fully compatible with 'ggplot2' for specifying transitions and animations in a flexible and extensible way.
 }
 \section{Good starting points}{
 
@@ -28,9 +24,9 @@ worth mentioning:
 \itemize{
 \item The \href{https://github.com/thomasp85/gganimate/wiki}{gganimate wiki} includes
 user supplied example walkthroughs
-\item The \href{https://github.com/ropenscilabs/learngganimate}{learngganimate} project
-by rOpenSci Labs includes a long range of detailed explorations of the
-different gganimate functions
+\item The \href{https://github.com/ropensci-archive/learngganimate}{learngganimate}
+project by rOpenSci Labs includes a long range of detailed explorations of
+the different gganimate functions
 }
 }
 

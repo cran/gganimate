@@ -28,10 +28,10 @@
 #' @section Object permanence:
 #' `transition_reveal` uses the group aesthetic of each layer to identify
 #' which rows in the input data correspond to the same graphic element and will
-#' therefore define a a whole to be revealed over the animation.
+#' therefore define a whole to be revealed over the animation.
 #' The group aesthetic, if not set, will be calculated from the interaction of all
 #' discrete aesthetics in the layer (excluding `label`), so it is often better
-#' to set it explicetly when animating, to make sure your data is interpreted in
+#' to set it explicitly when animating, to make sure your data is interpreted in
 #' the right way. If the group aesthetic is not set, and no discrete aesthetics
 #' exists then all rows will have the same group.
 #'
@@ -108,6 +108,11 @@ TransitionReveal <- ggproto('TransitionReveal', Transition,
     if (is.null(row_vars)) return(data)
     data$group <- paste0(row_vars$before, row_vars$after)
     time <- as.numeric(row_vars$along)
+    if (type == 'point') {
+      rank <- order(data$group, time)
+      data <- data[rank, ]
+      time <- time[rank]
+    }
 
     all_frames <- switch(
       type,
@@ -118,7 +123,7 @@ TransitionReveal <- ggproto('TransitionReveal', Transition,
     )
     all_frames$group <- paste0(all_frames$group, '<', all_frames$.frame, '>')
     all_frames$.frame <- NULL
-    all_frames
+    all_frames[!(c(diff(all_frames$.time), 1) <= .Machine$double.eps & all_frames$.phase == 'raw'), ]
   }
 )
 
@@ -126,7 +131,7 @@ TransitionReveal <- ggproto('TransitionReveal', Transition,
 # HELPERS -----------------------------------------------------------------
 
 get_row_along <- function(data, quo, nframes, range, after = FALSE) {
-  if (!after && require_stat(quo[[2]])) {
+  if (!after && require_stat(rlang::quo_get_expr(quo))) {
     return(eval_placeholder(data))
   }
   times <- lapply(data, safe_eval, expr = quo)

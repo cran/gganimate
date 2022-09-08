@@ -23,7 +23,7 @@
 #' therefore define which elements will turn into each other between time points.
 #' The group aesthetic, if not set, will be calculated from the interaction of all
 #' discrete aesthetics in the layer (excluding `label`), so it is often better
-#' to set it explicetly when animating, to make sure your data is interpreted in
+#' to set it explicitly when animating, to make sure your data is interpreted in
 #' the right way. If the group aesthetic is not set, and no discrete aesthetics
 #' exists then all rows will have the same group. If the group aesthetic is not
 #' unique in each state, then rows will be matched first by group and then by
@@ -96,7 +96,7 @@ TransitionTime <- ggproto('TransitionTime', Transition,
     if (is_placeholder(params$time)) {
       params$time <- get_row_time(data, params$time_quo, params$nframes, params$range, after = TRUE)
     } else {
-      params$time$values <- lapply(row_vars$time, as.integer)
+      params$time$values <- suppressWarnings(lapply(row_vars$time, as.integer))
     }
     params$row_id <- params$time$values
     params$frame_info <- data.frame(frame_time = params$time$frame_time)
@@ -106,7 +106,7 @@ TransitionTime <- ggproto('TransitionTime', Transition,
     row_time <- self$get_row_vars(data)
     if (is.null(row_time)) return(data)
     data$group <- paste0(row_time$before, row_time$after)
-    time <- as.integer(row_time$time)
+    time <- suppressWarnings(as.integer(row_time$time))
     states <- split(data, time)
     times <- as.integer(names(states))
     nframes <- diff(times)
@@ -134,9 +134,8 @@ TransitionTime <- ggproto('TransitionTime', Transition,
         stop(type, ' layers not currently supported by transition_time', call. = FALSE)
       )
     }
-    true_frame <- seq(times[1], times[length(times)])
-    all_frames <- all_frames[all_frames$.frame %in% which(true_frame > 0 & true_frame <= params$nframes), , drop = FALSE]
-    all_frames$.frame <- all_frames$.frame - min(all_frames$.frame) + 1
+    true_frame <- seq(max(1, times[1]), min(times[length(times)], params$nframes))
+    all_frames <- all_frames[all_frames$.frame %in% true_frame, , drop = FALSE]
     all_frames$group <- paste0(all_frames$group, '<', all_frames$.frame, '>')
     all_frames$.frame <- NULL
     all_frames
@@ -147,7 +146,7 @@ TransitionTime <- ggproto('TransitionTime', Transition,
 # HELPERS -----------------------------------------------------------------
 
 get_row_time <- function(data, quo, nframes, range, after = FALSE) {
-  if (after || !require_stat(quo[[2]])) {
+  if (after || !require_stat(rlang::quo_get_expr(quo))) {
     get_times(data, quo, nframes, range)
   } else {
     eval_placeholder(data)
@@ -159,7 +158,7 @@ get_times <- function(data, var, nframes, range) {
   time_class <- times$class
   times <- times$times
   if (is.null(range)) {
-    range <- range(unlist(times))
+    range <- range(unlist(times), na.rm = TRUE)
   } else {
     if (!inherits(range, time_class)) {
       stop('range must be given in the same class as time', call. = FALSE)
@@ -168,7 +167,10 @@ get_times <- function(data, var, nframes, range) {
   }
   times <- lapply(times, function(v) {
     if (is.null(v)) return(integer())
-    round(1 + (nframes - 1) * (v - range[1]) / diff(range))
+    v_u <- unique(v)
+    v_v <- round(1 + (nframes - 1) * (v_u - range[1]) / diff(range))
+    v_v[duplicated(v_v)] <- NA
+    v_v[match(v, v_u)]
   })
   frame_time <- seq(range[1], range[2], length.out = nframes)
   frame_time <- recast_times(frame_time, time_class)
