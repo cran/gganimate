@@ -3,7 +3,6 @@
 \docType{package}
 \name{gganimate-package}
 \alias{gganimate-package}
-\alias{_PACKAGE}
 \title{gganimate: A Grammar of Animated Graphics}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
@@ -49,7 +48,8 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item RStudio [copyright holder]
+  \item Posit, PBC [copyright holder, funder]
 }
 
 }
+\keyword{internal}

@@ -17,12 +17,12 @@ View <- ggproto('View', NULL,
     plot
   },
   reset_limits = function(self, plot, xlim, ylim) {
-    if (is.logical(self$fixed_lim$x)) {
+    if (is_logical(self$fixed_lim$x)) {
       if (self$fixed_lim$x) xlim <- plot$layout$coord$limits$x
     } else {
       xlim[!is.na(self$fixed_lim$x)] <- self$fixed_lim$x[!is.na(self$fixed_lim$x)]
     }
-    if (is.logical(self$fixed_lim$y)) {
+    if (is_logical(self$fixed_lim$y)) {
       if (self$fixed_lim$y) ylim <- plot$layout$coord$limits$y
     } else {
       ylim[!is.na(self$fixed_lim$y)] <- self$fixed_lim$y[!is.na(self$fixed_lim$y)]
@@ -47,6 +47,9 @@ View <- ggproto('View', NULL,
     if (inherits(plot$layout$coord, 'CoordFlip')) {
       # We need to do it twice because CoordFlip flips the scales in-place
       plot$layout$setup_panel_params()
+    }
+    if (inherits(plot$plot$guides, "Guides")) {
+      plot$layout$setup_panel_guides(plot$plot$guides, plot$plot$layers)
     }
     plot
   },

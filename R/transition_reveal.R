@@ -15,10 +15,9 @@
 #' of `along`
 #' @param keep_last For non-path/polygon layers should the last row be kept for
 #' subsequent frames.
-#' @param id **Deprecated**
 #'
 #' @section Label variables:
-#' `transition_along` makes the following variables available for string
+#' `transition_reveal` makes the following variables available for string
 #' literal interpretation, in addition to the general ones provided by
 #' [animate()]:
 #'
@@ -61,8 +60,24 @@
 #'   geom_point(colour = 'red', size = 3) +
 #'   transition_reveal(Day)
 #'
-transition_reveal <- function(along, range = NULL, keep_last = TRUE, id) {
-  if (!missing(id)) warning('The `id` argument has been deprecated. Set `id` in each layer with the `group` aesthetic', call. = FALSE)
+#' # Since ggplot2 3.4 geom_ribbon and geom_area has used stat_align
+#' # This stat is incompatible with transition_reveal when applied before
+#' # stats are calculated
+#' anim3 <- ggplot(airquality, aes(Day, Temp, group = Month)) +
+#'   geom_area() +
+#'   transition_reveal(Day)
+#'
+#' # This can be fixed by either reverting to use stat_identity
+#' anim4 <- ggplot(airquality, aes(Day, Temp, group = Month)) +
+#'   geom_area(stat = "identity") +
+#'   transition_reveal(Day)
+#'
+#' # Or by applying the transition after the stat
+#' anim5 <- ggplot(airquality, aes(Day, Temp, group = Month)) +
+#'   geom_area() +
+#'   transition_reveal(after_stat(x))
+#'
+transition_reveal <- function(along, range = NULL, keep_last = TRUE) {
   along_quo <- enquo(along)
   require_quo(along_quo, 'along')
   ggproto(NULL, TransitionReveal,
@@ -95,12 +110,23 @@ TransitionReveal <- ggproto('TransitionReveal', Transition,
     if (is_placeholder(params$along)) {
       params$along <- get_row_along(data, params$along_quo, params$nframes, params$range, after = TRUE)
     } else {
+      if (any(params$stat_align_layer)) {
+        cli::cli_abort(
+          c(
+            "{.fun transition_reveal} cannot do pre-stat transitioning when using {.fun stat_align}",
+            i = "Set {.arg along} to a computed aesthetic, e.g. {.code along = after_stat(x)}, or",
+            " " = "use {.fun stat_identity} in layer{?s} {as.character(which(params$stat_align_layer))}"
+          ),
+          call = call2("transition_reveal")
+        )
+      }
+
       params$along$values <- row_vars$along
     }
     static <- lengths(params$along$values) == 0
     params$row_id <- Map(function(t, s) if (s) character() else t,
                          t = params$along$values, s = static)
-    params$frame_info <- data.frame(frame_along = params$along$frame_time)
+    params$frame_info <- data_frame0(frame_along = params$along$frame_time)
     params
   },
   expand_panel = function(self, data, type, id, match, ease, enter, exit, params, layer_index) {
@@ -119,11 +145,16 @@ TransitionReveal <- ggproto('TransitionReveal', Transition,
       point = tween_along(data, ease, params$nframes, !!time, group, c(1, params$nframes), FALSE, params$keep_last),
       path = tween_along(data, ease, params$nframes, !!time, group, c(1, params$nframes), TRUE, params$keep_last),
       polygon = tween_along(data, ease, params$nframes, !!time, group, c(1, params$nframes), TRUE, params$keep_last),
-      stop(type, ' layers not currently supported by transition_reveal', call. = FALSE)
+      cli::cli_abort('{type} layers not currently supported by {.fun transition_reveal}')
     )
     all_frames$group <- paste0(all_frames$group, '<', all_frames$.frame, '>')
     all_frames$.frame <- NULL
-    all_frames[!(c(diff(all_frames$.time), 1) <= .Machine$double.eps & all_frames$.phase == 'raw'), ]
+    transitions <- setdiff(which(all_frames$.phase == "transition"), 1L)
+    transitions <- transitions[all_frames$.phase[transitions-1L] == "raw" & all_frames$group[transitions-1L] == all_frames$group[transitions]]
+    possible_repeats <- sort(c(transitions, transitions - 1L))
+    repeated <- duplicated(all_frames[possible_repeats, names(all_frames) != '.phase'], fromLast = TRUE)
+    repeated <- possible_repeats[repeated]
+    if (length(repeated) == 0) all_frames else all_frames[-repeated, ]
   }
 )
 
@@ -142,7 +173,7 @@ get_row_along <- function(data, quo, nframes, range, after = FALSE) {
     range <- range(unlist(times))
   } else {
     if (!inherits(range, time_class)) {
-      stop('range must be given in the same class as time', call. = FALSE)
+      cli::cli_abort('{.arg range} must be given in the same class as {.field time}')
     }
     range <- as.numeric(range)
   }

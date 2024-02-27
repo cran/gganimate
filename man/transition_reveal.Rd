@@ -4,7 +4,7 @@
 \alias{transition_reveal}
 \title{Reveal data along a given dimension}
 \usage{
-transition_reveal(along, range = NULL, keep_last = TRUE, id)
+transition_reveal(along, range = NULL, keep_last = TRUE)
 }
 \arguments{
 \item{along}{An unquoted expression giving the dimension to tween along. For
@@ -16,8 +16,6 @@ of \code{along}}
 
 \item{keep_last}{For non-path/polygon layers should the last row be kept for
 subsequent frames.}
-
-\item{id}{\strong{Deprecated}}
 }
 \description{
 This transition allows you to let data gradually appear, based on a given
@@ -30,7 +28,7 @@ disconnected segments as will happen when using \code{\link[=transition_time]{tr
 }
 \section{Label variables}{
 
-\code{transition_along} makes the following variables available for string
+\code{transition_reveal} makes the following variables available for string
 literal interpretation, in addition to the general ones provided by
 \code{\link[=animate]{animate()}}:
 \itemize{
@@ -76,6 +74,23 @@ anim2 <- ggplot(airquality, aes(Day, Temp, group = Month)) +
   geom_point(aes(group = seq_along(Day))) +
   geom_point(colour = 'red', size = 3) +
   transition_reveal(Day)
+
+# Since ggplot2 3.4 geom_ribbon and geom_area has used stat_align
+# This stat is incompatible with transition_reveal when applied before
+# stats are calculated
+anim3 <- ggplot(airquality, aes(Day, Temp, group = Month)) +
+  geom_area() +
+  transition_reveal(Day)
+
+# This can be fixed by either reverting to use stat_identity
+anim4 <- ggplot(airquality, aes(Day, Temp, group = Month)) +
+  geom_area(stat = "identity") +
+  transition_reveal(Day)
+
+# Or by applying the transition after the stat
+anim5 <- ggplot(airquality, aes(Day, Temp, group = Month)) +
+  geom_area() +
+  transition_reveal(after_stat(x))
 
 }
 \seealso{

@@ -120,7 +120,7 @@ animate <- function(plot, ...) {
 }
 #' @export
 animate.default <- function(plot, ...) {
-  stop('animation of ', class(plot)[1], ' objects not supported')
+  cli::cli_abort('animation of {.cls {class(plot)}} objects are not supported')
 }
 #' @rdname animate
 #' @export
@@ -139,7 +139,7 @@ animate.gganim <- function(plot, nframes, fps, duration, detail, renderer, devic
     ...
   )
   if (is_knitting() && identical(def_ren$renderer, args$renderer) && !def_ren$has_proper) {
-    warning('No renderer available. Please install the gifski, av, or magick package to create animated output', call. = FALSE)
+    cli::cli_warn('No renderer available. Please install the {.or {.pkg {c("gifski", "av", "magick")}}} package to create animated output')
     return(invisible(NULL))
   }
   orig_nframes <- args$nframes
@@ -152,7 +152,7 @@ animate.gganim <- function(plot, nframes, fps, duration, detail, renderer, devic
   plot <- prerender(plot, nframes_total)
   nframes_final <- get_nframes(plot)
 
-  frame_ind <- unique(round(seq(1, nframes_final, length.out = args$nframes)))
+  frame_ind <- unique0(round(seq(1, nframes_final, length.out = args$nframes)))
 
   if (args$device == 'current') {
     frame_ind <- c(rep(frame_ind[1], args$start_pause), frame_ind, rep(frame_ind[length(frame_ind)], args$end_pause))
@@ -165,25 +165,18 @@ animate.gganim <- function(plot, nframes, fps, duration, detail, renderer, devic
   }
 
   if (args$nframes != length(frame_ind)) {
-    message('nframes and fps adjusted to match transition')
+    cli::cli_inform('{.arg nframes} and {.arg fps} adjusted to match transition')
     args$fps <- args$fps * length(frame_ind) / args$nframes
   }
 
   if (args$ref_frame < 0) args$ref_frame <- nframes_final + 1 + args$ref_frame
 
-  frames_vars <- do.call(
-    draw_frames,
-    c(list(plot = plot,
-           frames = frame_ind,
-           device = args$device,
-           ref_frame = args$ref_frame),
-      args$dev_args)
-  )
+  frames_vars <- inject(draw_frames(plot = plot, frames = frame_ind, device = args$device, ref_frame = args$ref_frame, !!!args$dev_args))
   if (args$device == 'current') return(invisible(frames_vars))
 
-  if (args$start_pause != 0) frames_vars <- rbind(frames_vars[rep(1, args$start_pause), , drop = FALSE], frames_vars)
-  if (args$end_pause != 0) frames_vars <- rbind(frames_vars, frames_vars[rep(nrow(frames_vars), args$end_pause), , drop = FALSE])
-  if (args$rewind) frames_vars <- rbind(frames_vars, frames_vars[rev(seq_len(orig_nframes - nrow(frames_vars))), , drop = FALSE])
+  if (args$start_pause != 0) frames_vars <- vec_rbind0(frames_vars[rep(1, args$start_pause), , drop = FALSE], frames_vars)
+  if (args$end_pause != 0) frames_vars <- vec_rbind0(frames_vars, frames_vars[rep(nrow(frames_vars), args$end_pause), , drop = FALSE])
+  if (args$rewind) frames_vars <- vec_rbind0(frames_vars, frames_vars[rev(seq_len(orig_nframes - nrow(frames_vars))), , drop = FALSE])
 
   animation <- args$renderer(frames_vars$frame_source, args$fps)
   attr(animation, 'frame_vars') <- frames_vars
@@ -196,12 +189,10 @@ animate.gganim <- function(plot, nframes, fps, duration, detail, renderer, devic
 #' @export
 #' @keywords internal
 gganimate <- function(...) {
-  stop(
-    'It appears that you are trying to use the old API, which has been deprecated.\n',
-    'Please update your code to the new API or install the old version of gganimate\n',
-    'from https://github.com/thomasp85/gganimate/releases/tag/v0.1.1',
-    call. = FALSE
-  )
+  cli::cli_abort(c(
+    'It appears that you are trying to use the old API, which has been deprecated.',
+    i = 'Please update your code to the new API or install the old version of gganimate from {.url https://github.com/thomasp85/gganimate/releases/tag/v0.1.1}'
+  ))
 }
 #' @rdname gganimate
 #' @export
@@ -210,7 +201,7 @@ gg_animate <- gganimate
 #' @importFrom utils modifyList
 prepare_args <- function(nframes, fps, duration, detail, renderer, device, ref_frame, start_pause, end_pause, rewind, ...) {
   args <- list()
-  chunk_args <- if (is_knitting()) get_knitr_options(knitr::opts_chunk$get(), unlist = FALSE) else list(dev_args = list())
+  chunk_args <- if (is_knitting()) get_knitr_options(knitr::opts_current$get(), unlist = FALSE) else list(dev_args = list())
   args$nframes <- nframes %?% chunk_args$nframes %||% getOption('gganimate.nframes', 100)
   args$fps <- fps %?% chunk_args$fps %||% getOption('gganimate.fps', 10)
   duration <- duration %?% chunk_args$duration %||% getOption('gganimate.duration', NULL)
@@ -223,27 +214,25 @@ prepare_args <- function(nframes, fps, duration, detail, renderer, device, ref_f
     else args$fps <- args$nframes / duration
   }
   if (is.null(args$nframes) || is.null(args$fps)) {
-    stop("At least 2 of 'nframes', 'fps', and 'duration' must be given", call. = FALSE)
+    cli::cli_abort("At least 2 of {.arg nframes}, {.arg fps}, and {.arg duration} must be given")
   }
   args$detail <- detail %?% chunk_args$detail %||% getOption('gganimate.detail', 1)
   args$renderer <- renderer %?% chunk_args$renderer %||% getOption('gganimate.renderer', def_ren$renderer)
   args$device <- tolower(device %?% chunk_args$device %||% getOption('gganimate.device', 'png'))
-  if (args$device == 'svglite' && !requireNamespace('svglite', quietly = TRUE)) {
-    stop('The svglite package is required to use this device', call. = FALSE)
+  if (args$device == 'svglite') {
+    check_installed('svglite', 'to use the svglite device')
   }
-  if (args$device == 'ragg_png' && !requireNamespace('ragg', quietly = TRUE)) {
-    stop('The ragg package is required to use this device', call. = FALSE)
+  if (args$device == 'ragg_png') {
+    check_installed('ragg', 'to use the ragg_png device')
   }
   args$ref_frame <- ref_frame %?% chunk_args$ref_frame %||% getOption('gganimate.ref_frame', 1)
   args$start_pause <- start_pause %?% chunk_args$start_pause %||% getOption('gganimate.start_pause', 0)
   args$end_pause <- end_pause %?% chunk_args$end_pause %||% getOption('gganimate.end_pause', 0)
   args$rewind <- rewind %?% chunk_args$rewind %||% getOption('gganimate.rewind', FALSE)
-  dev_args <- list(...)
-  args$dev_args <- if (length(dev_args) > 0) {
-    modifyList(getOption('gganimate.dev_args', list()), dev_args)
-  } else {
-    modifyList(getOption('gganimate.dev_args', list()), chunk_args$dev_args)
-  }
+
+  args$dev_args <- modifyList(getOption('gganimate.dev_args', list()), chunk_args$dev_args)
+  args$dev_args <- modifyList(args$dev_args, list(...))
+
   args
 }
 # Build plot for a specific number of frames
@@ -257,10 +246,10 @@ prerender <- function(plot, nframes) {
 draw_frames <- function(plot, frames, device, ref_frame, ...) {
   stream <- device == 'current'
 
-  dims <- tryCatch(
+  dims <- try_fetch(
     plot_dims(plot, ref_frame),
     error = function(e) {
-      warning('Cannot get dimensions of plot table. Plot region might not be fixed', call. = FALSE)
+      cli::cli_warn('Cannot get dimensions of plot table. Plot region might not be fixed', parent = e)
       list(widths = NULL, heights = NULL)
     }
   )
@@ -280,7 +269,7 @@ draw_frames <- function(plot, frames, device, ref_frame, ...) {
     svglite = ,
     svg = paste0(files, '.svg'),
     current = files,
-    stop('Unsupported device', call. = FALSE)
+    cli::cli_abort('Unsupported device: {device}')
   )
   device <- switch(
     device,
@@ -294,6 +283,8 @@ draw_frames <- function(plot, frames, device, ref_frame, ...) {
     svg = svg,
     svglite = svglite::svglite
   )
+  args <- list(...)
+  args <- args[names(args) %in% names(formals(device))]
 
   pb <- progress_bar$new(
     'Rendering [:bar] at :fps fps ~ eta: :eta',
@@ -303,12 +294,12 @@ draw_frames <- function(plot, frames, device, ref_frame, ...) {
   pb$tick(0)
 
   for (i in seq_along(frames)) {
-    if (!stream) device(files[i], ...)
+    if (!stream) inject(device(files[i], !!!args))
 
-    tryCatch(
+    try_fetch(
       plot$scene$plot_frame(plot, frames[i], widths = dims$widths, heights = dims$heights),
       error = function(e) {
-        warning(conditionMessage(e), call. = FALSE)
+        cli::cli_warn('Failed to plot frame', parent = e)
       }
     )
 
@@ -338,7 +329,7 @@ plot_dims <- function(plot, ref_frame) {
   widths <- convertWidth(widths_rel, 'mm')
   heights_rel <- frame$heights
   heights <- convertHeight(heights_rel, 'mm')
-  if (is.list(widths)) { # New unit spec
+  if (is_list(widths)) { # New unit spec
     null_widths <- vapply(unclass(widths), `[[`, numeric(1), 1L) == 0
     null_heights <- vapply(unclass(heights), `[[`, numeric(1), 1L) == 0
   } else {

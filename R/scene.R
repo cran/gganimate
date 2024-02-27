@@ -39,6 +39,7 @@ Scene <- ggproto('Scene', NULL,
     if (self$transition$require_late_tween(self$transition_params)) self$tween_first[] <- FALSE
     self$group_column <- self$get_group_column(layers)
     self$match_shape <- self$get_shape_match(layers)
+    self$transition_params$stat_align_layer <- vapply(layers, function(l) inherits(l$stat, 'StatAlign'), logical(1))
   },
   before_stat = function(self, layer_data) {
     layer_data <- self$transition$map_data(layer_data, self$transition_params)
@@ -95,11 +96,11 @@ Scene <- ggproto('Scene', NULL,
     self$shadow_params$excluded_layers <- union(self$shadow$exclude_layer, static_layers)
     self$shadow_params <- self$shadow$train(layer_data, self$shadow_params)
     frame_vars <- list(
-      data.frame(frame = seq_len(self$nframes), nframes = self$nframes, progress = seq_len(self$nframes)/self$nframes),
+      data_frame0(frame = seq_len(self$nframes), nframes = self$nframes, progress = seq_len(self$nframes)/self$nframes),
       self$transition$get_frame_vars(self$transition_params),
       self$view$get_frame_vars(self$view_params)
     )
-    self$frame_vars <- do.call(cbind, frame_vars[!vapply(frame_vars, is.null, logical(1))])
+    self$frame_vars <- vctrs::vec_cbind(!!!frame_vars, .name_repair = 'minimal')
     layer_data
   },
   get_frame = function(self, plot, i) {
@@ -132,7 +133,7 @@ Scene <- ggproto('Scene', NULL,
     if (is.null(vp)) {
       grid.draw(plot)
     } else {
-      if (is.character(vp)) seekViewport(vp)
+      if (is_character(vp)) seekViewport(vp)
       else pushViewport(vp)
       grid.draw(plot)
       upViewport()
@@ -143,15 +144,26 @@ Scene <- ggproto('Scene', NULL,
     label_var <- as.list(self$frame_vars[i, ])
     label_var$data <- plot$data
     plot$plot$labels <- lapply(plot$plot$labels, function(label) {
-      if (is.expression(label) || is.call(label)) return(label)
-      vapply(label, function(l) {
-        l2 <- try(glue_data(label_var, l, .envir = plot$plot$plot_env), silent = TRUE)
+      orig_call <- FALSE
+      if (is_call(label)) {
+        orig_call <- TRUE
+        label <- list(label)
+      }
+      new_label <- lapply(label, function(l) {
+        l2 <- try(glue_call(label_var, l, .envir = plot$plot$plot_env), silent = TRUE)
         if (inherits(l2, 'try-error')) {
           l
         } else {
           l2
         }
-      }, character(1))
+      })
+      if (orig_call) {
+        new_label[[1]]
+      } else if (is_expression(label)) {
+        as.expression(new_label)
+      } else {
+        unlist(new_label)
+      }
     })
     plot
   },
@@ -174,3 +186,13 @@ Scene <- ggproto('Scene', NULL,
     vapply(layers, tween_before_stat, logical(1))
   }
 )
+
+glue_call <- function(.x, call, .envir) {
+  if (is_string(call)) {
+    return(glue_data(.x, call, .envir = .envir))
+  }
+  if (is_call(call)) {
+    call[] <- lapply(call, glue_call, .x = .x, .envir = .envir)
+  }
+  call
+}

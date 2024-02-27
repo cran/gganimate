@@ -1,3 +1,20 @@
+# gganimate 1.0.9
+
+* Fix for using `"svg"` device during knitting (#484)
+* Fix for correctly getting chunk options during knitting (#485)
+* Fix a bug in `transition_reveal()` that would remove data during transitions
+  (#480 and #473)
+* General upkeep to keep it in line with the evolvling coding principles in 
+  ggplot2 (move to using vctrs, cli, lifecycle, etc)
+* `transition_reveal()` now throws an error when it is used in conjunction with
+  `stat_align()` and transitioning before the stat has been calculated (#476)
+* Label interpolation now works when labels are expressions (#439)
+* `as_html_video()` gains `muted`, `loop`, and `controls` argument to control 
+  presentation of the video. Like autoplay these can be controlled during knitr
+  through the chunk options (e.g. `gganimate = list(muted = TRUE, loop = TRUE)`)
+  (#444)
+* Make the build process up-to-date with ggplot2 3.5.0
+
 # gganimate 1.0.8
 
 * Fix a bug when creating labels from aesthetics that include glue expressions 
