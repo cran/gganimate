@@ -16,13 +16,13 @@ knitr::opts_chunk$set(
 library(gganimate)
 
 # We'll start with a static plot
-p <- ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + 
+p <- ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) +
   geom_point()
 
 plot(p)
 
 ## -----------------------------------------------------------------------------
-anim <- p + 
+anim <- p +
   transition_states(Species,
                     transition_length = 2,
                     state_length = 1)
@@ -30,66 +30,66 @@ anim <- p +
 anim
 
 ## -----------------------------------------------------------------------------
-anim + 
+anim +
   ease_aes('cubic-in-out') # Slow start and end for a smoother look
 
 ## -----------------------------------------------------------------------------
-anim + 
+anim +
   ease_aes(y = 'bounce-out') # Sets special ease for y aesthetic
 
 ## -----------------------------------------------------------------------------
-anim + 
+anim +
   ggtitle('Now showing {closest_state}',
           subtitle = 'Frame {frame} of {nframes}')
 
 ## -----------------------------------------------------------------------------
-ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + 
-  geom_line(aes(group = rep(1:50, 3)), colour = 'grey') + 
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) +
+  geom_line(aes(group = rep(1:50, 3)), colour = 'grey') +
   geom_point()
 
 ## -----------------------------------------------------------------------------
-ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + 
-  geom_point(aes(colour = Species)) + 
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) +
+  geom_point(aes(colour = Species)) +
   transition_states(Species,
                     transition_length = 2,
                     state_length = 1)
 
 ## -----------------------------------------------------------------------------
-ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + 
-  geom_point(aes(group = seq_along(Species))) + 
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) +
+  geom_point(aes(group = seq_along(Species))) +
   transition_states(Species,
                     transition_length = 2,
                     state_length = 1)
 
 ## -----------------------------------------------------------------------------
-ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + 
-  geom_point(aes(colour = Species, group = 1L)) + 
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) +
+  geom_point(aes(colour = Species, group = 1L)) +
   transition_states(Species,
                     transition_length = 2,
                     state_length = 1)
 
 ## -----------------------------------------------------------------------------
-anim <- ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) + 
-  geom_point(aes(colour = Species), size = 2) + 
+anim <- ggplot(iris, aes(x = Petal.Width, y = Petal.Length)) +
+  geom_point(aes(colour = Species), size = 2) +
   transition_states(Species,
                     transition_length = 2,
                     state_length = 1)
 
-anim + 
-  enter_fade() + 
+anim +
+  enter_fade() +
   exit_shrink()
 
 ## -----------------------------------------------------------------------------
-anim + 
-  enter_fade() + enter_drift(x_mod = -1) + 
+anim +
+  enter_fade() + enter_drift(x_mod = -1) +
   exit_shrink() + exit_drift(x_mod = 5)
 
 ## ----eval=requireNamespace('av', quietly = TRUE)------------------------------
-#  # Video output
-#  animate(
-#    anim + enter_fade() + exit_fly(y_loc = 1),
-#    renderer = av_renderer()
-#  )
+# # Video output
+# animate(
+#   anim + enter_fade() + exit_fly(y_loc = 1),
+#   renderer = av_renderer()
+# )
 
 ## ----out.width=NULL-----------------------------------------------------------
 # Different size and resolution

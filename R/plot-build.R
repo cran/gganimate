@@ -1,6 +1,6 @@
 #' @importFrom ggplot2 ggplot_build geom_blank waiver
 #' @export
-ggplot_build.gganim <- function(plot) {
+ggplot_build.gganim <- function(plot, ...) {
   plot <- plot_clone(plot)
   if (length(plot$layers) == 0) {
     plot <- plot + geom_blank()
@@ -21,7 +21,15 @@ ggplot_build.gganim <- function(plot) {
   names(scale_labels) <- vapply(scales$scales, function(sc) sc$aesthetics[1], character(1))
   lapply(scales$scales, function(sc) sc$name <- waiver())
   scale_labels <- scale_labels[!vapply(scale_labels, is.waive, logical(1))]
-  plot$labels[names(scale_labels)] <- scale_labels
+
+  # `setup_plot_labels()` is an internal function, but I'm sure the ggplot2
+  # devs allow us some grace and leniency.
+  setup_plot_labels <- get0("setup_plot_labels", asNamespace("ggplot2"))
+  if (is.function(setup_plot_labels)) {
+    plot$labels <- setup_plot_labels(plot, layers, data)
+  } else {
+    plot$labels[names(scale_labels)] <- scale_labels
+  }
   # --
 
 
@@ -94,23 +102,36 @@ ggplot_build.gganim <- function(plot) {
   layout$setup_panel_params()
   data <- layout$map_position(data)
 
-  new_guides <- inherits(plot$guides, "Guides")
-  if (new_guides) {
-    layout$setup_panel_guides(plot$guides, plot$layers)
+  layout$setup_panel_guides(plot$guides, plot$layers)
+
+  complete_theme <- get0("complete_theme", asNamespace("ggplot2"))
+  if (is.function(complete_theme)) {
+    plot$theme <- complete_theme(plot$theme)
   }
 
   # Train and map non-position scales
   npscales <- scales$non_position_scales()
   if (npscales$n() > 0) {
-    lapply(data, npscales$train_df)
-    if (new_guides) {
+    if (is.function(npscales$set_palettes)) {
+      npscales$set_palettes(plot$theme)
+      lapply(data, npscales$train_df)
+      plot$guides <- plot$guides$build(npscales, plot$layers, plot$labels, data, theme = plot$theme)
+    } else {
+      lapply(data, npscales$train_df)
       plot$guides <- plot$guides$build(npscales, plot$layers, plot$labels, data)
     }
     data <- lapply(data, npscales$map_df)
   }
 
   # Fill in defaults etc.
-  data <- by_layer(function(l, d) l$compute_geom_2(d), layers, data, "setting up geom aesthetics")
+  if (is.function(complete_theme)) {
+    data <- by_layer(
+      function(l, d) l$compute_geom_2(d, theme = plot$theme),
+      layers, data, "setting up geom aesthetics"
+    )
+  } else {
+    data <- by_layer(function(l, d) l$compute_geom_2(d), layers, data, "setting up geom aesthetics")
+  }
 
   # gganimate
   data <- scene$after_defaults(data)

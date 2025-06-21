@@ -1,7 +1,7 @@
 Type: Package
 Package: gganimate
 Title: A Grammar of Animated Graphics
-Version: 1.0.9
+Version: 1.0.10
 Authors@R: c(
     person("Thomas Lin", "Pedersen", , "thomasp85@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5147-4711")),
@@ -18,7 +18,7 @@ Description: The grammar of graphics as implemented in the 'ggplot2'
 License: MIT + file LICENSE
 URL: https://gganimate.com, https://github.com/thomasp85/gganimate
 BugReports: https://github.com/thomasp85/gganimate/issues
-Depends: ggplot2 (>= 3.5.0)
+Depends: ggplot2 (>= 3.5.2)
 Imports: cli, glue, grDevices, grid, lifecycle, progress, rlang,
         scales, stringi, transformr (>= 0.1.5), tweenr (>= 2.0.3),
         utils, vctrs
@@ -26,7 +26,7 @@ Suggests: av, base64enc, covr, gifski (>= 1.4.3), htmltools, knitr,
         magick, ragg, rmarkdown, sf, svglite, testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Collate: 'aaa.R' 'anim_save.R' 'animate.R' 'animation_store.R'
         'ease-aes.R' 'gganim.R' 'gganimate-ggproto.R'
         'gganimate-package.r' 'ggplot2_reimpl.R' 'group_column.R'
@@ -44,10 +44,10 @@ Collate: 'aaa.R' 'anim_save.R' 'animate.R' 'animation_store.R'
         'view-step.R' 'view-step-manual.R' 'view-zoom.R'
         'view-zoom-manual.R' 'zzz.R'
 NeedsCompilation: no
-Packaged: 2024-02-27 12:19:51 UTC; thomas
-Author: Thomas Lin Pedersen [aut, cre]
-    (<https://orcid.org/0000-0002-5147-4711>),
+Packaged: 2025-06-18 11:14:58 UTC; thomas
+Author: Thomas Lin Pedersen [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-5147-4711>),
   David Robinson [aut],
   Posit, PBC [cph, fnd]
 Repository: CRAN
-Date/Publication: 2024-02-27 14:00:03 UTC
+Date/Publication: 2025-06-21 13:40:02 UTC
