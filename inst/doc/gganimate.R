@@ -85,11 +85,11 @@ anim +
   exit_shrink() + exit_drift(x_mod = 5)
 
 ## ----eval=requireNamespace('av', quietly = TRUE)------------------------------
-# # Video output
-# animate(
-#   anim + enter_fade() + exit_fly(y_loc = 1),
-#   renderer = av_renderer()
-# )
+# Video output
+animate(
+  anim + enter_fade() + exit_fly(y_loc = 1),
+  renderer = av_renderer()
+)
 
 ## ----out.width=NULL-----------------------------------------------------------
 # Different size and resolution
